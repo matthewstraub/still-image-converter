@@ -7,6 +7,7 @@ import { useImageConverter } from "@/hooks/useImageConverter";
 import DropZone from "@/components/DropZone";
 import ImagePreview from "@/components/ImagePreview";
 import InfoPanel from "@/components/InfoPanel";
+import CropPositionControl from "@/components/CropPositionControl";
 import { motion, AnimatePresence } from "framer-motion";
 import { Crop, ArrowRight } from "lucide-react";
 import { toast } from "sonner";
@@ -19,7 +20,10 @@ export default function Home() {
     converted,
     isConverting,
     error,
+    cropOffset,
+    cropAxis,
     processImage,
+    updateCropOffset,
     downloadJpg,
     downloadPng,
     downloadBoth,
@@ -111,8 +115,8 @@ export default function Home() {
                   },
                   {
                     step: "02",
-                    title: "Auto Crop & Fill",
-                    desc: "Image fills 1920×1080, centered cover crop",
+                    title: "Adjust & Crop",
+                    desc: "Slide to position the crop, image fills 1920×1080",
                   },
                   {
                     step: "03",
@@ -157,8 +161,15 @@ export default function Home() {
                 />
               </div>
 
-              {/* Right: Info Panel */}
-              <div className="w-full lg:w-80 flex-shrink-0">
+              {/* Right: Info Panel + Crop Control */}
+              <div className="w-full lg:w-80 flex-shrink-0 flex flex-col gap-4">
+                {/* Crop Position Control — placed prominently above the info panel */}
+                <CropPositionControl
+                  cropOffset={cropOffset}
+                  cropAxis={cropAxis}
+                  onOffsetChange={updateCropOffset}
+                />
+
                 <InfoPanel
                   imageInfo={imageInfo}
                   converted={converted}
